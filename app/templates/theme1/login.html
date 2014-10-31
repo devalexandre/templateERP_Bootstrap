@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Adianti ERP Template</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    {LIBRARIES}
+    {HEAD}
+    <script type="text/javascript">
+    $('[generator="adianti"]').live('click', function()
+    {
+       __adianti_load_page($(this).attr('href'));
+       return false;
+    });
+    
+    window.onpopstate = function(stackstate)
+    {
+    	if (stackstate.state)
+    	{
+    		__adianti_load_page_no_register(stackstate.state.url);
+    	}
+    };
+    
+    $(function() {
+        $( document ).tooltip();
+    });
+    
+    $(document).ready( function()
+    {
+       __adianti_load_page('engine.php?class=LoginForm');
+    });
+    </script>
+</head>
+<body>
+    <div class="adianti_container">
+        <div class="header">
+            <div class="thin_bar">
+                &nbsp;
+            </div>
+            <div class="header_content">
+              <a class="btn btn-primary" href="http://www.adianti.com.br" target="_blank"> Template ERP Desenvolvido por Adianti Solution</a>
+               <br> <a class="btn btn-success" href="http://www.progs.net.br" target="_blank"> Implementado com Bootstrap 3  por Progs Desenvolvimento</a>
+              
+
+            </div>
+            
+            <div class="header_bottom" style="clear:both"></div>
+        </div>
+        
+        <div class="body">
+            <div id="adianti_div_content" class="login" style="padding-top:80px"></div>
+            <div id="adianti_online_content"></div>
+            <div id="pageboth"><br></div>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+<script type="text/javascript">
+//#javascript_placeholder#
+</script>
+</body>
+</html>

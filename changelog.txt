@@ -1,0 +1,85 @@
+http://www.adianti.com/framework-changelog
+
+1.0.2 (2013-10-15) "Eight days a week" release
+==============================================
+- A new Adianti Studio Pro is being released with new features. Check out the Adianti Studio Pro home page;
+- A new tutor application with new samples is available. Check out the Tutor home page;
+- A new component was created to display trees (TTreeView). Check out the tutor application (Presentation -> Forms -> Tree View);
+- A new sample was created to show how to build Master/Detail forms. This form allows to register a project and many product backlog items inside the project. Check out the tutor application (Organization -> Complex Views -> Master/Detail forms);
+- A new sample was created to show how to build a checkout screen. This screen allows the user to select items from one datagrid and transfer these items to another datagrid, using just the session information. Check out the tutor application (Organization -> Complex Views -> Checkout form);
+- A new sample was created, to show the usage of HTML templates and CSS styles to decorated framework objects, in this case, a form. Check out the tutor application (Presentation -> Forms -> Decorated forms);
+- A new sample was created, to show the usage of the HTML editing component (THtmlEditor); Check out the tutor application (Presentation -> Forms -> HTML Editor);
+- A new sample was created, to show how to use the complete MVC separation in the framework, without the need to create the application view inside the construtor method of page controllers; Check out the tutor application (Presentation -> Forms -> Reusable Forms);
+- It was improved the size of message and question dialogs;
+- Now it's possible to create scrollable datagrids, with a fixed header. To do that, it's needed to execute the methods: TDataGrid::makeScrollable(), to enable the scrolling and also TDataGrid::setSize(), to define its size. Check out the tutor application (Presentation -> Datagrid -> Scrollable Datagrids);
+- The TSeekButton component now also accepts to define an exit action (setExitAction()), besides its default search action (setAction()), that is also executed when the user leaves the field;
+- It was added to the TEntry component, the possibility to define a mask for numeric values, by using the method TEntry::setNumericMask($decimals, $decimalsSeparator, $thousandSeparator); Check out the tutor application (Presentation -> Forms -> Decorated Forms);
+- It was added to the TMessage classe, the possibility to add an action to the close button. Thanks to the Victor Feitoza. To do that, it was added a third parameter to the constructor method. __construct($type, $message, TAction $action = NULL). Check out the tutor application (Presentation -> Dialogs -> Error Dialog);
+- The sack library (used in lookups) was removed and replaced by native jQuery calls. It was also removed from templates (libraries.html);
+- It was created a simplified way to count objects from database, using fluent interface. Check out the tutor application (Persistence -> Collections -> Collection simple count);
+- It was created a simplified way to load objects from database, using fluent interface. Check out the tutor application (Persistence -> Collections -> Collection simple load);
+- It was created a simplified way to delete objects from database, using fluent interface. Check out the tutor application (Persistence -> Collections -> Collection simple delete);
+- The engine.php file (The web engine) was simplified. Many parts of this file (responsible by deciding the class and the method to be called) were passed to the TCoreApplication class, an internal framework class. The file is smaller, but the developer still can customize its behavior, adding validation rules inside the run() method, where all the requests pass through.
+- It was created a better way to show exceptions that are not catched by the developer inside the controller classes. These exceptions are handled inside the run() method in TCoreApplication, what is invoked from engine.php. By standard, the framework now started to show a more complete information (trace) about the exception, to make easier to find the errors. In the end of the engine.php file, there is a call to TApplication::run(TRUE). In the boolean parameter (TRUE), we define if the exceptions must be shown with the complete trace (TRUE) or not (FALSE).
+- Inside the page controller classes, the exception are handled totally by developer, that usually use the TMessage class to show the error messages. To find the problems easier, it was created a class for debug exceptions. this way, during development, instead of simply use the TMessage class, the developer can use: new TExceptionView($e); where $e is the exception object. The framework will provide a complete debug of the thrown exception.
+- The APPLICATION_NAME constant, that is used to separate the content of session variables according to the application name, now has its content define from the application configuration file (application.ini). Before, this constant was defined both in engine.php and index.web.php, and many developers were changing its content just in one place, causing a wrong behavior;
+- Datagrid actions now are executed keeping the pagination parameters. This way, when deleting a record from a datagrid, the user stay at the same page. To make this aproach work, some changes are needed:
+	In the case you still uses an engine.php from previous version, you must pass the URL parameters ($_GET) when executing the method show() over the page $page->show( $_GET ). In the new version of engine.php (that uses the TCoreApplication class), its enabled by default;
+	Everytime the developer rewrite the show() method in some page and make a call to onReload() method, he should now pass a new parameter: $this->onReload( func_get_arg(0) );
+	All the delete() methods from datagrids, that call onReload() must add a new parameter to the execution, that represent the URL parameters, this way: $this->onReload( $param );
+- It was created some new CSS classes: tdatagrid_head and tdatagrid_body, for those ones that want to manipulate the datagrid appearance.
+- The TAdiantiLoader class, responsible by class loading, was changed to also load classes from app/view directory;
+- Catchable Fatal Errors (Type hinting) now are treated as exceptions, with a better debug (set_error_handler);
+- Some validations were added:
+	If the developer passes NULL to the method TTableRow::addCell(), an exception will be thrown;
+	The TForm::setFields() method will just accept a parameter of type array. Otherwise, an exception will be thrown;
+	The TQuickForm::addQuickAction() method now accepts just a TAction object as parameter. Otherwise, an exception will be thrown;
+	When instantianting a TAction object, it is checked if the parameter is a valid PHP callback. Otherwise, an exception will be thrown;
+	The addCell() method from TTableWriter* classes, new check if the style parameter was previously registered. Otherwise, an exception will be thrown;
+	It is not allowed to add a datagrid item without call createModel() method before. In this case, an exception will be thrown;
+	It is not allowed to create a datagrid column or action after the call of createModel(). In this case, an exception will be thrown;
+	It is not allowed to add 2 fields with the same name in a form by TForm::addField(). In this case, an exception will be thrown;
+	All the widgets now implement the interface IAdiantiWidget, what allows a more consistency in forms;
+	The TForm::setFields() method was changed to accept just widgets (IWidget) in the elements of the array passed as parameter;
+- Bug fixes
+	Mysql Connections, that were set to ISO encoding, now are using UTF-8 by default. When is needed to use Mysql with ISO encoding, it will be needed to add "char = ISO" inside the database configuration file;
+	When using the serial strategy for ID increment in PostgreSQL, the ID of object was not being registered after executing the store() method. This bug was fixed;
+	The TMultiField component had a scrolling bug when using many items. This bug was fixed.
+	
+1.0.1 (2013-06-15) "Do You Want to Know a Secret" release
+=========================================================
+- The persistence layer now supports SQL Server;
+- The persistence layer now supports Oracle;
+- A new Adianti Studio Pro is being released with new features. Check out the Adianti Studio Pro home page;
+- A new tutor application with new samples is available;
+- A new resource is available to deal with form interactions dynamically. Check out the tutor application (Presentation -> Forms -> Dynamic interactions);
+- A new group of libraries for chart generation is available. Check out the tutor application (Presentation -> Charts/Reports -> Line/Bar/Pie chart);
+- A new datagrid with top filtering and CSV exporting is available. Check out the tutor application (Organization -> Complex Views -> Complete customers datagrid);
+- A new inline datagrid editing is now available. Check out the tutor application (Organization -> Complex Views -> Inline editing datagrid);
+- A new component (TSpinner) is available. Check out the tutor application (Presentation -> Forms -> Custom Forms);
+- A new component (TSlider) is available. Check out the tutor application (Presentation -> Forms -> Custom Forms);
+- A new tooltip resource ($widget->setTip()) is avaliable. Check out the tutor application (Presentation -> Forms -> Custom Forms);
+- A new validator (TNumericValidator) is available. Check out the tutor application (Presentation -> Forms -> Form validation);
+- A new sample demonstrates how to create a new framework component in application space. Check out the tutor application (Presentation -> Web specific -> Creating new components);
+- A new sample demonstrates how to create window containers. Check out the tutor application (Presentation -> Containers -> Window);
+- A new sample demonstrates how to modify datagrid columns. Check out the tutor application (Presentation -> Datagrid -> Datagrid column transformers);
+- A new sample demonstrates how to make datagrids with checkbuttons. Check out the tutor application (Presentation -> Datagrid -> Datagrids with Checkbutton);
+- A new sample demonstrates how to make datagrids actions open a new window. Check out the tutor application (Presentation -> Datagrid -> Datagrids with new Window);
+- A new sample demonstrates how to filter and order a databrid by an associated information. Check out the tutor application (Organization -> Complex Views -> Complete customers datagrid);
+- The site documentation now explains how to create new components (http://www.adianti.com/framework-extensibility);
+- The site documentation now explains how to create new validators (http://www.adianti.com/framework-extensibility);
+- All the /lib folder for your application must be updated. Take care to not to overwrite the /app folder (your application);
+- All the needed JS and CSS files are now encapsulated in "libraries.html", that must be refered inside the template using {LIBRARIES} keyword. This keyword is replaced by the "libraries.html" content inside "index.web.php";
+- Many external libraries used by the framework were updated (jquery-1.8.3, jquery-ui-1.9.2), and some others were included. Make sure you have imported the libraries.html in your application using the {LIBRARIES} keyword inside the template;
+- TButton now uses bootstrap css styles;
+- TMessage and TQuestion now uses jquery dialogs; 
+- The referential integrity is now turned on by default in SQLite;
+- Some styles were improved and taken off from the source code (seek lib/adianti/include/tdatagrid/tdatagrid.css);
+- New methods:
+    The __construct method for TDBCheckGroup, TDBCombo and TDBRadioGroup now receives a fifth element that is the column for ordering;
+    The setOperator() method for TStandardList was created, to define wich operator will be used for filtering in standard list controllers;
+    The disableDefaultClick() method for TDataGrid was created to optionally turn off the default click action in datagrid rows.
+
+1.0 (2012-11-10) "Twist and Shout" release
+==========================================
+Initial public release.
